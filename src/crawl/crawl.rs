@@ -5,23 +5,22 @@ use regex::Regex;
 
 use super::error::CrawlError;
 
+pub struct LolcheggCrawler {
+    main_url: &'static str,
+	css_path: String,
+    path_finder: CssPathFinder,
+}
+
 struct CssPathFinder {
     tag: Regex,
     class : Regex,
     id: Regex,
 }
-pub struct Crawler {
-    main_url: &'static str,
-	pbe_url:  &'static str,
-	css_path: String,
-    path_finder: CssPathFinder,
-}
 
-impl Crawler {
+impl LolcheggCrawler {
     pub fn new() -> Self {
         let crawler = Self { // TODO. URL들 다 config로 빼고 주입 받기
             main_url: "https://lolchess.gg/meta",
-            pbe_url : "https://lolchess.gg/meta?pbe=true",
             css_path : String::from("#content-container > section > div.css-s9pipd.e2kj5ne0 > div > div > div > div.css-5x9ld.emls75t2 > div.css-35tzvc.emls75t4 > div"), 
             path_finder : CssPathFinder { 
                     tag: Regex::new(r"^[^<]*<([^>]+)>.*$").unwrap(), 
@@ -42,13 +41,13 @@ impl Crawler {
        return Ok(path)
     }
 
-    pub fn main_dec(&self) -> Result<Vec<String>, CrawlError> {
+    pub fn get_main_dec(&self) -> Result<Vec<String>, CrawlError> {
         crawl(self.main_url, &self.css_path)
     }
-
-    pub fn pbe_dec(&self) -> Result<Vec<String>, CrawlError> {
-        crawl(self.pbe_url, &self.css_path)
+    pub fn get_pbe_dec(&self) -> Result<Vec<String>, CrawlError> {
+       crawl(&format!("{}?pbe=true",self.main_url ), &self.css_path)
     }
+
 }
 
 impl CssPathFinder {
@@ -150,7 +149,7 @@ mod test {
 
 	#[test]
 	fn new_test(){
-		let crawler = Crawler::new();
+		let crawler = LolcheggCrawler::new();
 		print!("{}", crawler.css_path)
 	}
 
@@ -159,9 +158,8 @@ mod test {
         let url = "https://lolchess.gg/meta";
         // let path = "div#content-container > section.css-1v8my8o.esg9lhj0 > div.css-s9pipd.e2kj5ne0 > div > div.css-1iudmso.emls75t0 > div.css-1r1x0j5.emls75t1 > div.css-5x9ld.emls75t2 > div.css-35tzvc.emls75t4 > div" ;
         let path = "html.b-dakgg > body > div#__next > div.theme-dark.css-q3savf.e19bnpjr0 > div.css-1x48m3k.eetc6ox0 > div.content > div.css-vwmdp.e18pwoek0 > div.main-contents > div#content-container.css-nys28y.e18pwoek4 > section.css-1v8my8o.esg9lhj0 > div.css-s9pipd.e2kj5ne0 > div > div.css-1iudmso.emls75t0 > div.css-1r1x0j5.emls75t1 > div.css-5x9ld.emls75t2 > div.css-35tzvc.emls75t4 > div";
-        let result = crawl(url, path);
-        match result {
-            Ok(_) => print!("{:?}", result),
+        match crawl(url, path) {
+            Ok(result) => print!("{:?}", result),
             Err(_) => assert!(false),
         }
         // is_err를 사용해서 테스트 하면 간결. assert!(crawl(url, path).is_err());
@@ -182,8 +180,8 @@ mod test {
 
     #[test]
     fn crawler_test() {
-        let crawler = Crawler::new();
-        match crawler.main_dec() {
+        let crawler = LolcheggCrawler::new();
+        match crawler.get_main_dec() {
             Ok(result) => {
                 print!("{:?}", result)
             }
@@ -197,7 +195,7 @@ mod test {
      */
     #[test]
     fn find_selector_test(){
-        let crawler = Crawler::new();
+        let crawler = LolcheggCrawler::new();
         
         if let Ok(result) = crawler.path_finder.css_path(&crawler.main_url, "초반 빌드업 요약") {
             print!("{}", result)
