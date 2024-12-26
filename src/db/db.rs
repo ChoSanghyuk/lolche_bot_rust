@@ -1,21 +1,22 @@
 use mysql::*;
 use mysql::prelude::*;
-use crate::mode;
+use crate::bot::traits::Mode;
 
+#[derive(Clone)]
 pub struct Storage {
     pool: Pool
 }
 
 impl Storage {
 
-    fn new() -> Self {
+    pub fn new() -> Self {
         let url = "mysql://root:root@127.0.0.1:3306/lolche";
         let pool = Pool::new(url).unwrap();
         Self { pool: pool }
 
     }
     
-    fn create(&self) -> Result<(), Box<dyn std::error::Error>> {
+    fn create(&self) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
 
         let mut conn = self.pool.get_conn()?;
         conn.query_drop(r"
@@ -41,7 +42,13 @@ impl Storage {
         Ok(())
     }
 
-    fn insert_main(&self, input:&str) -> Result<(), Box<dyn std::error::Error>> {
+    pub fn record_done(&self, input:&str, mode: &Mode) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+        match mode {
+            Mode::main => self.insert_main(input),
+            Mode::pbe => self.insert_pbe(input)
+        }
+    }
+    fn insert_main(&self, input:&str) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         let mut conn = self.pool.get_conn()?;
         conn.exec_drop(r"
             INSERT INTO main (name) 
@@ -50,7 +57,7 @@ impl Storage {
         Ok(())
     }
 
-    fn insert_pbe(&self, input:&str) -> Result<(), Box<dyn std::error::Error>> {
+    fn insert_pbe(&self, input:&str) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         let mut conn = self.pool.get_conn()?;
         conn.exec_drop(r"
             INSERT INTO pbe (name) 
@@ -59,13 +66,13 @@ impl Storage {
         Ok(())
     }
     
-    fn upsert_mode(&self, mode: mode::Lolche) -> Result<(), Box<dyn std::error::Error>> {
+    pub fn upsert_mode(&self, mode: &Mode) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         let mut conn = self.pool.get_conn()?;
-        let mut is_main :bool ;
+        let is_main :bool ;
 
         match mode {
-            mode::Lolche::main => is_main = true,
-            mode::Lolche::pbe => is_main = false,
+            Mode::main => is_main = true,
+            Mode::pbe => is_main = false,
         }
 
         conn.exec_drop(r"
@@ -78,7 +85,15 @@ impl Storage {
         Ok(())
     }
 
-    fn delete_main(&self) -> Result<(), Box<dyn std::error::Error>> {
+    pub fn delete_all(&self, mode:&Mode) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+
+        match *mode {
+            Mode::main => self.delete_main(),
+            Mode::pbe => self.delete_pbe(),
+        }
+    }
+
+    fn delete_main(&self) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         let mut conn = self.pool.get_conn()?;
         conn.exec_drop(r"
             DELETE FROM main
@@ -88,7 +103,7 @@ impl Storage {
         Ok(())
     }
 
-    fn delete_pbe(&self) -> Result<(), Box<dyn std::error::Error>> {
+    fn delete_pbe(&self) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         let mut conn = self.pool.get_conn()?;
         conn.exec_drop(r"
             DELETE FROM pbe
@@ -98,7 +113,43 @@ impl Storage {
         Ok(())
     }
 
-    fn select_main(&self) -> Result<Vec<String>, Box<dyn std::error::Error>> {
+    pub fn delete_record(&self, mode:&Mode, target:&str) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+        match *mode {
+            Mode::main => self.delete_main_record(target),
+            Mode::pbe => self.delete_pbe_record(target),
+        }
+    }
+
+    fn delete_main_record(&self, target:&str) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+        let mut conn = self.pool.get_conn()?;
+        conn.exec_drop(r"
+            DELETE FROM main
+            WHERE 1=1
+            AND name = :name",
+            (target,) // memo. only supports positional placeholders
+        )?;
+        Ok(())
+    }
+
+    fn delete_pbe_record(&self, target:&str) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+        let mut conn = self.pool.get_conn()?;
+        conn.exec_drop(r"
+            DELETE FROM pbe
+            WHERE 1=1
+            AND name = :name",
+            (target,) // memo. only supports positional placeholders
+        )?;
+        Ok(())
+    }
+
+    pub fn retrieve_done(&self, mode: &Mode) -> Result<Vec<String>, Box<dyn std::error::Error + Send + Sync>> {
+        match *mode {
+            Mode::main => self.select_main(),
+            Mode::pbe => self.select_pbe(),
+        }
+    }
+
+    fn select_main(&self) -> Result<Vec<String>, Box<dyn std::error::Error + Send + Sync>> {
         let mut conn = self.pool.get_conn()?;
         let result: Vec<String> = conn.exec(r"
             SELECT name
@@ -109,7 +160,7 @@ impl Storage {
         Ok(result)
     }
 
-    fn select_pbe(&self) -> Result<Vec<String>, Box<dyn std::error::Error>> {
+    fn select_pbe(&self) -> Result<Vec<String>, Box<dyn std::error::Error + Send + Sync>> {
         let mut conn = self.pool.get_conn()?;
         let result: Vec<String> = conn.exec(r"
             SELECT name
@@ -120,7 +171,7 @@ impl Storage {
         Ok(result)
     }
 
-    fn select_mode(&self) -> Result<mode::Lolche,  Box<dyn std::error::Error>> {
+    pub fn select_mode(&self) -> Result<Mode,  Box<dyn std::error::Error + Send + Sync>> {
 
         let mut conn = self.pool.get_conn()?;
         let result: Option<bool> = conn.exec_first(r"
@@ -133,12 +184,12 @@ impl Storage {
         match result {
             Some(is_main) => {
                 if is_main {
-                    Ok(mode::Lolche::main)
+                    Ok(Mode::main)
                 } else {
-                    Ok(mode::Lolche::pbe)   
+                    Ok(Mode::pbe)   
                 }
             }
-            None => Ok(mode::Lolche::main)
+            None => Ok(Mode::main)
         }
     }
 
@@ -175,7 +226,7 @@ mod test {
     #[test]
     fn upsert_mode_test(){
         let stg = Storage::new();   
-        match stg.upsert_mode(mode::Lolche::main) {
+        match stg.upsert_mode(&Mode::main) {
             Ok(_) => print!("Success"),
             Err(e) => {
                 eprint!("{}", e);
@@ -206,5 +257,11 @@ mod test {
                 assert!(false);
             }
          }
+    }
+
+    #[test]
+    fn test_pool_is_send_sync() {
+        fn assert_send_sync<T: Send + Sync>() {}
+        assert_send_sync::<Pool>();
     }
 }

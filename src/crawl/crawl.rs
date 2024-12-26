@@ -2,15 +2,18 @@ use reqwest::blocking::get;
 use scraper::{Html, Selector};
 use std::{error::Error, fmt::format};
 use regex::Regex;
+use crate::bot::traits::Mode;
 
 use super::error::CrawlError;
 
+#[derive(Clone)]
 pub struct LolcheggCrawler {
     main_url: &'static str,
 	css_path: String,
     path_finder: CssPathFinder,
 }
 
+#[derive(Clone)]
 struct CssPathFinder {
     tag: Regex,
     class : Regex,
@@ -19,6 +22,7 @@ struct CssPathFinder {
 
 impl LolcheggCrawler {
     pub fn new() -> Self {
+        log::info!("HI - new");
         let crawler = Self { // TODO. URL들 다 config로 빼고 주입 받기
             main_url: "https://lolchess.gg/meta",
             css_path : String::from("#content-container > section > div.css-s9pipd.e2kj5ne0 > div > div > div > div.css-5x9ld.emls75t2 > div.css-35tzvc.emls75t4 > div"), 
@@ -31,20 +35,29 @@ impl LolcheggCrawler {
         crawler
     }
 
-    pub fn update_css_path(&self, url: &str, target: &str) -> Result<String, CrawlError> {
-        let path = self.path_finder.css_path(url, target).unwrap();
+    pub fn recommended_deck(&self, mode: &Mode) -> Result<Vec<String>, CrawlError> {
+        match *mode {
+            Mode::main => self.get_main_dec(),
+            Mode::pbe => self.get_pbe_dec(),
+        }
+    } 
+
+    pub fn update_css_path(&mut self) -> Result<(), CrawlError> {
+        let path: String = self.path_finder.css_path(self.main_url, "초반 빌드업 요약").unwrap();
         
-        if crawl(url, &path).is_err() {
+        if crawl(self.main_url, &path).is_err() {
             Err(format!("잘못된 css path 결과"))?
         }
+
+        self.css_path = path;
        
-       return Ok(path)
+       return Ok(());
     }
 
-    pub fn get_main_dec(&self) -> Result<Vec<String>, CrawlError> {
+    fn get_main_dec(&self) -> Result<Vec<String>, CrawlError> {
         crawl(self.main_url, &self.css_path)
     }
-    pub fn get_pbe_dec(&self) -> Result<Vec<String>, CrawlError> {
+    fn get_pbe_dec(&self) -> Result<Vec<String>, CrawlError> {
        crawl(&format!("{}?pbe=true",self.main_url ), &self.css_path)
     }
 
@@ -120,7 +133,7 @@ fn document(url: &str) -> Result<Html, CrawlError> {
 }
 
 fn crawl(url: &str, path: &str) -> Result<Vec<String>, CrawlError> {
-
+    log::info!("HI\n{url}\n{path}");
     // Parse the HTML document
     let document = document(url)?;
 
@@ -180,6 +193,9 @@ mod test {
 
     #[test]
     fn crawler_test() {
+        std::env::set_var("RUST_LOG", "info");
+        pretty_env_logger::init();
+
         let crawler = LolcheggCrawler::new();
         match crawler.get_main_dec() {
             Ok(result) => {
@@ -190,6 +206,7 @@ mod test {
             }
         }
     }
+    
     /*
     div#content-container > section.css-1v8my8o.esg9lhj0 > div.css-s9pipd.e2kj5ne0 > div > div.css-1iudmso.emls75t0 > div.css-1r1x0j5.emls75t1 > div.css-5x9ld.emls75t2 > div.css-35tzvc.emls75t4 > div
      */
