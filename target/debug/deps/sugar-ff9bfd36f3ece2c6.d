@@ -1,0 +1,11 @@
+/Users/84455/workspace/lolche_bot_rust/target/debug/deps/libsugar-ff9bfd36f3ece2c6.rmeta: /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sugar-0.2.0/src/lib.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sugar-0.2.0/src/result_ext.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sugar-0.2.0/src/hashmap_ext.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sugar-0.2.0/src/collections_macros.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sugar-0.2.0/src/primitive_syntax/mod.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sugar-0.2.0/src/primitive_syntax/cmp.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sugar-0.2.0/src/primitive_syntax/max_min.rs
+
+/Users/84455/workspace/lolche_bot_rust/target/debug/deps/sugar-ff9bfd36f3ece2c6.d: /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sugar-0.2.0/src/lib.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sugar-0.2.0/src/result_ext.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sugar-0.2.0/src/hashmap_ext.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sugar-0.2.0/src/collections_macros.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sugar-0.2.0/src/primitive_syntax/mod.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sugar-0.2.0/src/primitive_syntax/cmp.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sugar-0.2.0/src/primitive_syntax/max_min.rs
+
+/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sugar-0.2.0/src/lib.rs:
+/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sugar-0.2.0/src/result_ext.rs:
+/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sugar-0.2.0/src/hashmap_ext.rs:
+/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sugar-0.2.0/src/collections_macros.rs:
+/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sugar-0.2.0/src/primitive_syntax/mod.rs:
+/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sugar-0.2.0/src/primitive_syntax/cmp.rs:
+/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sugar-0.2.0/src/primitive_syntax/max_min.rs:

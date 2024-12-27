@@ -1,0 +1,15 @@
+/Users/84455/workspace/lolche_bot_rust/target/debug/deps/libmarkup5ever-efc568d77303aff5.rmeta: /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.14.0/lib.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.14.0/data/mod.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.14.0/interface/mod.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.14.0/interface/tree_builder.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.14.0/serialize.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.14.0/util/buffer_queue.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.14.0/util/smallcharset.rs /Users/84455/workspace/lolche_bot_rust/target/debug/build/markup5ever-b6864c9e094214f0/out/generated.rs /Users/84455/workspace/lolche_bot_rust/target/debug/build/markup5ever-b6864c9e094214f0/out/named_entities.rs
+
+/Users/84455/workspace/lolche_bot_rust/target/debug/deps/markup5ever-efc568d77303aff5.d: /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.14.0/lib.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.14.0/data/mod.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.14.0/interface/mod.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.14.0/interface/tree_builder.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.14.0/serialize.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.14.0/util/buffer_queue.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.14.0/util/smallcharset.rs /Users/84455/workspace/lolche_bot_rust/target/debug/build/markup5ever-b6864c9e094214f0/out/generated.rs /Users/84455/workspace/lolche_bot_rust/target/debug/build/markup5ever-b6864c9e094214f0/out/named_entities.rs
+
+/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.14.0/lib.rs:
+/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.14.0/data/mod.rs:
+/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.14.0/interface/mod.rs:
+/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.14.0/interface/tree_builder.rs:
+/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.14.0/serialize.rs:
+/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.14.0/util/buffer_queue.rs:
+/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/markup5ever-0.14.0/util/smallcharset.rs:
+/Users/84455/workspace/lolche_bot_rust/target/debug/build/markup5ever-b6864c9e094214f0/out/generated.rs:
+/Users/84455/workspace/lolche_bot_rust/target/debug/build/markup5ever-b6864c9e094214f0/out/named_entities.rs:
+
+# env-dep:OUT_DIR=/Users/84455/workspace/lolche_bot_rust/target/debug/build/markup5ever-b6864c9e094214f0/out

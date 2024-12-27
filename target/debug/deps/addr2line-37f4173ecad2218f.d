@@ -1,0 +1,11 @@
+/Users/84455/workspace/lolche_bot_rust/target/debug/deps/libaddr2line-37f4173ecad2218f.rmeta: /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/addr2line-0.24.2/src/lib.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/addr2line-0.24.2/src/frame.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/addr2line-0.24.2/src/function.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/addr2line-0.24.2/src/lazy.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/addr2line-0.24.2/src/line.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/addr2line-0.24.2/src/lookup.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/addr2line-0.24.2/src/unit.rs
+
+/Users/84455/workspace/lolche_bot_rust/target/debug/deps/addr2line-37f4173ecad2218f.d: /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/addr2line-0.24.2/src/lib.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/addr2line-0.24.2/src/frame.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/addr2line-0.24.2/src/function.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/addr2line-0.24.2/src/lazy.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/addr2line-0.24.2/src/line.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/addr2line-0.24.2/src/lookup.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/addr2line-0.24.2/src/unit.rs
+
+/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/addr2line-0.24.2/src/lib.rs:
+/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/addr2line-0.24.2/src/frame.rs:
+/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/addr2line-0.24.2/src/function.rs:
+/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/addr2line-0.24.2/src/lazy.rs:
+/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/addr2line-0.24.2/src/line.rs:
+/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/addr2line-0.24.2/src/lookup.rs:
+/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/addr2line-0.24.2/src/unit.rs:

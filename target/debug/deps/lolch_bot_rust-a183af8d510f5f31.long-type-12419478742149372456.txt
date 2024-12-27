@@ -1,0 +1,1 @@
+fn(teloxide::Bot, {type error}, std::string::String) -> impl futures::Future<Output = std::result::Result<(), {type error}>> {process_text_message}

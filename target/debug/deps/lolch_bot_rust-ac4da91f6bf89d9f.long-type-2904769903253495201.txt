@@ -1,0 +1,1 @@
+fn(teloxide::Bot, Arc<LolcheBot>, teloxide::prelude::Message) -> impl Future<Output = std::result::Result<(), Box<(dyn StdError + Send + Sync + 'static)>>> {bot::bot::mode}
