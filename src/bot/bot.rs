@@ -14,18 +14,36 @@ use super::traits::{self, Mode};
 // todo. clone 대신 Arc로 wrapping 하는 것 고려
 #[derive(Clone)]
 pub struct LolcheBot {
+    token: String,
     pub loader: LolcheggCrawler,
     pub stg: Storage,
 }
-// pub struct LolcheBot <L, S, E> 
-//     where 
-//         L: traits::DeckLoader<E>,
-//         S: traits::Storage<E>,
-//         E : std::error::Error 
-// {
-//     loader: L,
-//     stg : S,
-// }
+
+impl LolcheBot {
+
+    pub fn new(token: String, loader:LolcheggCrawler, stg:Storage) -> Self{
+        Self{
+            token:token,
+            loader:loader,
+            stg:stg,
+        }
+    }
+
+    pub async fn run(self) {
+        let bot = Bot::new(&self.token);
+        let shared_lolchebot = Arc::new(RwLock::new(self));
+
+        Dispatcher::builder(
+            bot,
+            schema()
+        )
+        .dependencies(dptree::deps![InMemStorage::<State>::new(), shared_lolchebot])
+        .enable_ctrlc_handler()
+        .build()
+        .dispatch()
+        .await;
+    }
+}
 
 type MyDialogue = Dialogue<State, InMemStorage<State>>;
 type HandlerResult = Result<(), Box<dyn std::error::Error + Send + Sync>>;
@@ -57,26 +75,6 @@ enum Command {
     #[command(description = "fix path to decks")]
     Fix
 }
-
-impl LolcheBot {
-
-    pub async fn run(self, token: &str) {
-        let bot = Bot::new(token);
-        let shared_lolchebot = Arc::new(RwLock::new(self));
-
-        Dispatcher::builder(
-            bot,
-            schema()
-        )
-        .dependencies(dptree::deps![InMemStorage::<State>::new(), shared_lolchebot])
-        .enable_ctrlc_handler()
-        .build()
-        .dispatch()
-        .await;
-    }
-}
-
-
 
 fn schema() -> UpdateHandler<Box<dyn std::error::Error + Send + Sync + 'static>> {
     use dptree::case;
@@ -326,18 +324,6 @@ mod test {
             Ok(_) => print!("Success"),
             Err(_) => print!("Fail")
         }
-    }
-
-    #[tokio::test]
-    async fn run_test() {
-        pretty_env_logger::init();
-        log::info!("Test Start");
-        let my_bot = LolcheBot{
-            loader : LolcheggCrawler::new(),
-            stg: Storage::new(),
-        };
-
-        my_bot.run(TOKEN).await;
     }
 }
 

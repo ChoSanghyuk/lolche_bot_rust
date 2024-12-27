@@ -9,11 +9,9 @@ pub struct Storage {
 
 impl Storage {
 
-    pub fn new() -> Self {
-        let url = "mysql://root:root@127.0.0.1:3306/lolche";
+    pub fn new(url:&str) -> Self {
         let pool = Pool::new(url).unwrap();
         Self { pool: pool }
-
     }
     
     fn create(&self) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
@@ -199,9 +197,11 @@ impl Storage {
 mod test {
     use super::*;
 
+    const url: &'static str = "mysql://root:root@127.0.0.1:3306/lolche";
+
 	#[test]
 	fn create_test(){
-		let stg = Storage::new();
+		let stg = Storage::new(url);
 		match stg.create() {
             Ok(_) => print!("Success"),
             Err(e) => {
@@ -213,7 +213,7 @@ mod test {
 
     #[test]
     fn insert_test(){
-        let stg = Storage::new();   
+        let stg = Storage::new(url);   
         match stg.insert_main("[상징] 6자동기계 코그모 리롤덱") {
             Ok(_) => print!("Success"),
             Err(e) => {
@@ -225,7 +225,7 @@ mod test {
 
     #[test]
     fn upsert_mode_test(){
-        let stg = Storage::new();   
+        let stg = Storage::new(url);   
         match stg.upsert_mode(&Mode::main) {
             Ok(_) => print!("Success"),
             Err(e) => {
@@ -237,7 +237,7 @@ mod test {
 
     #[test]
     fn select_main_test(){
-        let stg = Storage::new();   
+        let stg = Storage::new(url);   
         match stg.select_main() {
             Ok(result) => print!("{:?}", result),
             Err(e) => {
@@ -249,7 +249,7 @@ mod test {
 
     #[test]
     fn delete_main_test(){
-        let stg = Storage::new();   
+        let stg = Storage::new(url);   
         match stg.delete_main() {
             Ok(result) => print!("{:?}", result),
             Err(e) => {

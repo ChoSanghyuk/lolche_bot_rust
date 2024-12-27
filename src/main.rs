@@ -1,30 +1,29 @@
 mod crawl; 
 mod db;
 mod bot;
+mod config;
 
 use crawl::crawl::LolcheggCrawler;
 use db::db::Storage;
 use bot::bot::LolcheBot;
+use config::conf::Config;
 
 #[tokio::main]
 async fn main() {
-    println!("Hello, world!");
+    
+    let config = Config::new();
 
-    const TOKEN: &str = "";
-    std::env::set_var("RUST_LOG", "info");
+    std::env::set_var("RUST_LOG", config.log_level());
     pretty_env_logger::init();
-    log::info!("Test Start");
 
-    let my_bot = LolcheBot{
-        loader : LolcheggCrawler::new(),
-        stg: Storage::new(),
-    };
 
-    my_bot.run(TOKEN).await;
+    let lolchegg_crawler = LolcheggCrawler::new();
+    let stg = Storage::new(&config.db_url()); // memo. config.db_url()의 결과값이 String을 소유하고 있으며, main 블록이 끝나면 소멸됨
+
+    
+    let my_bot = LolcheBot::new(config.token(), lolchegg_crawler,stg);
+
+    log::info!("Lolche Bot Started!");
+
+    my_bot.run().await;
 }
-
-/*
-todo
-config 파일에서 가져오기
-에러 메시지로 보내기
-*/
