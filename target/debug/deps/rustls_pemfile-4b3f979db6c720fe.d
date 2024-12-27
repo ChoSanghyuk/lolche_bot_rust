@@ -1,6 +1,0 @@
-/Users/84455/workspace/lolche_bot_rust/target/debug/deps/librustls_pemfile-4b3f979db6c720fe.rmeta: /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-pemfile-2.2.0/src/lib.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-pemfile-2.2.0/src/pemfile.rs
-
-/Users/84455/workspace/lolche_bot_rust/target/debug/deps/rustls_pemfile-4b3f979db6c720fe.d: /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-pemfile-2.2.0/src/lib.rs /Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-pemfile-2.2.0/src/pemfile.rs
-
-/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-pemfile-2.2.0/src/lib.rs:
-/Users/84455/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustls-pemfile-2.2.0/src/pemfile.rs:

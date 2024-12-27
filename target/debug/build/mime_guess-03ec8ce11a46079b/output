@@ -1,1 +1,0 @@
-cargo:rustc-env=MIME_TYPES_GENERATED_PATH=/Users/84455/workspace/lolche_bot_rust/target/debug/build/mime_guess-03ec8ce11a46079b/out/mime_types_generated.rs

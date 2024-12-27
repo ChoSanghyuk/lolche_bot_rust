@@ -1,1 +1,0 @@
-futures::Then<impl futures::Future<Item = (RequestHandle, telebot::objects::Message), Error = failure::error::Error> + '_, std::result::Result<(), _>, {closure@src/telebot/bot.rs:20:96: 20:99}>
