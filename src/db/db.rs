@@ -11,28 +11,30 @@ impl Storage {
 
     pub fn new(url:&str) -> Self {
         let pool = Pool::new(url).unwrap();
-        Self { pool: pool }
+        let stg = Storage{ pool: pool };
+        stg.create().unwrap();
+        stg
     }
     
     fn create(&self) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
 
         let mut conn = self.pool.get_conn()?;
         conn.query_drop(r"
-            CREATE TABLE IF NOT EXISTS mains (
+            CREATE TABLE IF NOT EXISTS main (
             id 	INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(30) NOT NULL,
             created_at DATETIME NOT NULL DEFAULT NOW()
         )")?;
 
         conn.query_drop(r"
-            CREATE TABLE IF NOT EXISTS pbes (
+            CREATE TABLE IF NOT EXISTS pbe (
             id 	INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(30) NOT NULL,
             created_at DATETIME NOT NULL DEFAULT NOW()
         )")?;
 
         conn.query_drop(r"
-            CREATE TABLE IF NOT EXISTS modes (
+            CREATE TABLE IF NOT EXISTS mode (
             id 	INT PRIMARY KEY,
             is_main BOOL
         )")?;
@@ -49,7 +51,7 @@ impl Storage {
     fn insert_main(&self, input:&str) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         let mut conn = self.pool.get_conn()?;
         conn.exec_drop(r"
-            INSERT INTO mains (name) 
+            INSERT INTO main (name) 
             VALUES (:dec_name)",
              (input, ))?; // memo. 파라미터가 하나일 때에는 (파라미터1, )으로 사용 
         Ok(())
@@ -58,7 +60,7 @@ impl Storage {
     fn insert_pbe(&self, input:&str) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         let mut conn = self.pool.get_conn()?;
         conn.exec_drop(r"
-            INSERT INTO pbes (name) 
+            INSERT INTO pbe (name) 
             VALUES (:dec_name)",
              (input, ))?; // memo. 파라미터가 하나일 때에는 (파라미터1, )으로 사용 
         Ok(())
@@ -74,7 +76,7 @@ impl Storage {
         }
 
         conn.exec_drop(r"
-            INSERT INTO modes (id, is_main) 
+            INSERT INTO mode (id, is_main) 
             VALUES (:id, :is_main) 
             ON DUPLICATE KEY UPDATE
             is_main = :is_main",
@@ -94,7 +96,7 @@ impl Storage {
     fn delete_main(&self) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         let mut conn = self.pool.get_conn()?;
         conn.exec_drop(r"
-            DELETE FROM mains
+            DELETE FROM main
             WHERE 1=1",
             () // memo. only supports positional placeholders
         )?;
@@ -104,7 +106,7 @@ impl Storage {
     fn delete_pbe(&self) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         let mut conn = self.pool.get_conn()?;
         conn.exec_drop(r"
-            DELETE FROM pbes
+            DELETE FROM pbe
             WHERE 1=1",
             () // memo. only supports positional placeholders
         )?;
@@ -121,7 +123,7 @@ impl Storage {
     fn delete_main_record(&self, target:&str) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         let mut conn = self.pool.get_conn()?;
         conn.exec_drop(r"
-            DELETE FROM mains
+            DELETE FROM main
             WHERE 1=1
             AND name = :name",
             (target,) // memo. only supports positional placeholders
@@ -132,7 +134,7 @@ impl Storage {
     fn delete_pbe_record(&self, target:&str) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         let mut conn = self.pool.get_conn()?;
         conn.exec_drop(r"
-            DELETE FROM pbes
+            DELETE FROM pbe
             WHERE 1=1
             AND name = :name",
             (target,) // memo. only supports positional placeholders
@@ -151,7 +153,7 @@ impl Storage {
         let mut conn = self.pool.get_conn()?;
         let result: Vec<String> = conn.exec(r"
             SELECT name
-            FROM mains
+            FROM main
             WHERE 1=1",
            ()
         )?;
@@ -162,7 +164,7 @@ impl Storage {
         let mut conn = self.pool.get_conn()?;
         let result: Vec<String> = conn.exec(r"
             SELECT name
-            FROM pbes
+            FROM pbe
             WHERE 1=1",
            ()
         )?;
@@ -174,7 +176,7 @@ impl Storage {
         let mut conn = self.pool.get_conn()?;
         let result: Option<bool> = conn.exec_first(r"
             SELECT is_main
-            FROM modes
+            FROM mode
             WHERE id=1",
            ()
         )?;
