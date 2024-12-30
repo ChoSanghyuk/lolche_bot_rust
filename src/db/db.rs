@@ -18,21 +18,21 @@ impl Storage {
 
         let mut conn = self.pool.get_conn()?;
         conn.query_drop(r"
-            CREATE TABLE IF NOT EXISTS main (
+            CREATE TABLE IF NOT EXISTS mains (
             id 	INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(30) NOT NULL,
             created_at DATETIME NOT NULL DEFAULT NOW()
         )")?;
 
         conn.query_drop(r"
-            CREATE TABLE IF NOT EXISTS pbe (
+            CREATE TABLE IF NOT EXISTS pbes (
             id 	INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(30) NOT NULL,
             created_at DATETIME NOT NULL DEFAULT NOW()
         )")?;
 
         conn.query_drop(r"
-            CREATE TABLE IF NOT EXISTS mode (
+            CREATE TABLE IF NOT EXISTS modes (
             id 	INT PRIMARY KEY,
             is_main BOOL
         )")?;
@@ -49,7 +49,7 @@ impl Storage {
     fn insert_main(&self, input:&str) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         let mut conn = self.pool.get_conn()?;
         conn.exec_drop(r"
-            INSERT INTO main (name) 
+            INSERT INTO mains (name) 
             VALUES (:dec_name)",
              (input, ))?; // memo. 파라미터가 하나일 때에는 (파라미터1, )으로 사용 
         Ok(())
@@ -58,7 +58,7 @@ impl Storage {
     fn insert_pbe(&self, input:&str) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         let mut conn = self.pool.get_conn()?;
         conn.exec_drop(r"
-            INSERT INTO pbe (name) 
+            INSERT INTO pbes (name) 
             VALUES (:dec_name)",
              (input, ))?; // memo. 파라미터가 하나일 때에는 (파라미터1, )으로 사용 
         Ok(())
@@ -74,7 +74,7 @@ impl Storage {
         }
 
         conn.exec_drop(r"
-            INSERT INTO mode (id, is_main) 
+            INSERT INTO modes (id, is_main) 
             VALUES (:id, :is_main) 
             ON DUPLICATE KEY UPDATE
             is_main = :is_main",
@@ -94,7 +94,7 @@ impl Storage {
     fn delete_main(&self) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         let mut conn = self.pool.get_conn()?;
         conn.exec_drop(r"
-            DELETE FROM main
+            DELETE FROM mains
             WHERE 1=1",
             () // memo. only supports positional placeholders
         )?;
@@ -104,7 +104,7 @@ impl Storage {
     fn delete_pbe(&self) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         let mut conn = self.pool.get_conn()?;
         conn.exec_drop(r"
-            DELETE FROM pbe
+            DELETE FROM pbes
             WHERE 1=1",
             () // memo. only supports positional placeholders
         )?;
@@ -121,7 +121,7 @@ impl Storage {
     fn delete_main_record(&self, target:&str) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         let mut conn = self.pool.get_conn()?;
         conn.exec_drop(r"
-            DELETE FROM main
+            DELETE FROM mains
             WHERE 1=1
             AND name = :name",
             (target,) // memo. only supports positional placeholders
@@ -132,7 +132,7 @@ impl Storage {
     fn delete_pbe_record(&self, target:&str) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
         let mut conn = self.pool.get_conn()?;
         conn.exec_drop(r"
-            DELETE FROM pbe
+            DELETE FROM pbes
             WHERE 1=1
             AND name = :name",
             (target,) // memo. only supports positional placeholders
@@ -151,7 +151,7 @@ impl Storage {
         let mut conn = self.pool.get_conn()?;
         let result: Vec<String> = conn.exec(r"
             SELECT name
-            FROM main
+            FROM mains
             WHERE 1=1",
            ()
         )?;
@@ -162,7 +162,7 @@ impl Storage {
         let mut conn = self.pool.get_conn()?;
         let result: Vec<String> = conn.exec(r"
             SELECT name
-            FROM pbe
+            FROM pbes
             WHERE 1=1",
            ()
         )?;
@@ -174,7 +174,7 @@ impl Storage {
         let mut conn = self.pool.get_conn()?;
         let result: Option<bool> = conn.exec_first(r"
             SELECT is_main
-            FROM mode
+            FROM modes
             WHERE id=1",
            ()
         )?;
