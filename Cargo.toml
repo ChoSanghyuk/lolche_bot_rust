@@ -1,5 +1,5 @@
 [package]
-name = "lolch_bot_rust"
+name = "lolche_bot_rust"
 version = "0.1.0"
 edition = "2021"
 
